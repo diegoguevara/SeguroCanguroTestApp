@@ -52,3 +52,9 @@ c:/> gradlew.bat run
 ```
 http://127.0.0.1:8080
 ```
+
+## Project Structure
+
+RxNetty Proxy Server: `/src`
+
+AngularJS Application: `/public`
