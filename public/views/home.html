@@ -1,0 +1,115 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="brand">Brand:</label>
+            <select name="brand" class="form-control" ng-options="itm.id as itm.value for itm in brand_list" ng-model="selected_brand" ng-change="getModels()"></select>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="model">Model:</label>
+            <select ng-show="model_list" name="model" class="form-control" ng-options="itm.id as itm.value for itm in model_list" ng-model="selected_model" ng-change="getReferences()"></select>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="reference">Reference:</label>
+            <select ng-show="reference_list"  name="reference" class="form-control" ng-options="itm.id as itm.value for itm in reference_list" ng-model="selected_reference"></select>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>&nbsp;</label>
+            <a class="btn btn-primary btn-block" ng-click="search()" >Search</a>
+        </div>
+    </div>
+    
+</div>
+
+
+
+
+<div class="row" ng-show="show_form">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="brand">Valor Asegurado:</label>
+            <span>{{medata.value | currency:'$ ':0}}</span>
+        </div>
+    </div>
+</div>
+
+
+<form role="form" ng-submit="onSubmit()" name="frm" ng-show="show_form && !show_result">
+    <div class="row" >
+        <div class="col-md-6" ng-repeat="itm in fields_data.fields">
+            <div class="form-group" ng-if="itm.type==='TEXT'">
+                <label>{{itm.text}}</label>
+                <input type="text" ng-model="form_data[itm.id]" class="form-control" ng-required="itm.required">
+            </div>
+
+            <div class="form-group" ng-if="itm.type==='DROPDOWN'||itm.type==='AUTOCOMPLETE'">
+                <label>{{itm.text}}</label>
+                <select ng-model="form_data[itm.id]" ng-options="value.id as value.value for value in itm.values" class="form-control" ng-required="itm.required"></select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="col-md-6 col-md-offset-6">
+            <button type="submit" class="btn btn-primary btn-block" >Next</button>
+        </div>
+    </div>
+</form>
+
+
+
+<div class="row" ng-show="show_result">
+    <div class="col-md-12">
+        <hr/>
+    </div>
+    <div class="col-md-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 110px;">&nbsp;</th>
+                    <th ng-click="propertyName='companyName';reverse=!reverse" style="cursor:pointer;" >
+                        <span data-toggle="tooltip" data-placement="top" title="Click to order by Company">Company</span>
+                        <span ng-if="propertyName==='companyName' && reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                        <span ng-if="propertyName==='companyName' && !reverse" class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                    </th>
+                    <th class="text-right" ng-click="propertyName='premium';reverse=!reverse" style="cursor:pointer;">
+                        <span data-toggle="tooltip" data-placement="top" title="Click to order by Price">Price</span>
+                        <span ng-if="propertyName==='premium' && reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                        <span ng-if="propertyName==='premium' && !reverse" class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="itm in compare_result | orderBy:propertyName:reverse">
+                    <td>
+                        <img class="center-block" ng-if="itm.companyId!=='equidad' && itm.companyId!=='allianz' && itm.companyId!=='solidaria' && itm.companyId!=='previsora' " style="max-height:50px; max-width:80px;"  ng-src="{{itm.logo}}" alt="{{itm.companyName}}">
+                        <img class="center-block" ng-if="itm.companyId==='equidad'"   style="max-height:50px; max-width:80px;"  ng-src="https://segurocanguro.com/assets/external_logos/equidad.png" alt="{{itm.companyName}}">
+                        <img class="center-block" ng-if="itm.companyId==='allianz'"   style="max-height:50px; max-width:80px;"  ng-src="https://segurocanguro.com/assets/external_logos/allianz.png" alt="{{itm.companyName}}">
+                        <img class="center-block" ng-if="itm.companyId==='solidaria'" style="max-height:50px; max-width:80px;"  ng-src="https://segurocanguro.com/assets/external_logos/solidaria.png" alt="{{itm.companyName}}">
+                        <img class="center-block invert" ng-if="itm.companyId==='previsora'" style="max-height:50px; max-width:80px;"  ng-src="https://segurocanguro.com/assets/external_logos/previsora.png" alt="{{itm.companyName}}">
+
+                        
+                    </td>
+                    <td>
+                        <span>{{itm.companyName}}</span>
+                        <br/>
+                        <small>{{itm.insuranceName}}</small>
+                    </td>
+                    <td class="text-right">
+                        <span ng-if="itm.premium">{{itm.premium | currency:'$ ':0}}</span>
+                        <span ng-if="!itm.premium">it was not possible to obtain a price</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
