@@ -47,3 +47,8 @@ Windows:
 c:/> gradlew.bat run
 ```
 
+### Web App port 8080
+
+```
+http://127.0.0.1:8080
+```
