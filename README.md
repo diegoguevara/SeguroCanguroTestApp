@@ -1,4 +1,4 @@
-# SeguroCanguro :: Work Exercise
+
 
 **AngularJS 1.6.x Version**
 
